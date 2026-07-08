@@ -1,0 +1,6 @@
+{
+  "name": "Udhar Khata Ledger",
+  "description": "A simple ledger app to manage customer transactions, payments, outstanding balances, and send payment reminders over WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

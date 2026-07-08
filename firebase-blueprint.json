@@ -1,0 +1,346 @@
+{
+  "entities": {
+    "Customer": {
+      "title": "Customer",
+      "description": "Store customer ledger profile with contact and balance details.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the customer."
+        },
+        "phone": {
+          "type": "string",
+          "description": "WhatsApp contact number."
+        },
+        "balance": {
+          "type": "number",
+          "description": "Outstanding balance of the customer. Purchase adds, payment subtracts."
+        },
+        "pin": {
+          "type": "string",
+          "description": "PIN password for customer portal login."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["name"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Store custom online booked orders placed by customers.",
+      "type": "object",
+      "properties": {
+        "customer_id": { "type": "string" },
+        "customer_name": { "type": "string" },
+        "items": {
+          "type": "array",
+          "description": "List of ordered products."
+        },
+        "total_amount": { "type": "number" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "executed", "cancelled"]
+        },
+        "notes": { "type": "string" },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["customer_id", "customer_name", "items", "total_amount", "status", "date"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Product in catalog with rate.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        }
+      },
+      "required": ["name", "price"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Record of a credit purchase entry.",
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "product_name": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        },
+        "total_amount": {
+          "type": "number"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["customer_id", "product_id", "quantity", "price", "total_amount"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Record of cash received from a customer.",
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "account": {
+          "type": "string",
+          "enum": ["cash", "bank"],
+          "description": "Account where payment is received (petty cash or bank)."
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["customer_id", "amount"]
+    },
+    "Vendor": {
+      "title": "Vendor",
+      "description": "Store supplier / wholesaler credit and balance details.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "balance": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["name"]
+    },
+    "VendorPurchase": {
+      "title": "VendorPurchase",
+      "description": "Inbound supplier inventory cargo delivery record.",
+      "type": "object",
+      "properties": {
+        "vendor_id": {
+          "type": "string"
+        },
+        "product_id": {
+          "type": "string"
+        },
+        "product_name": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "cost_price": {
+          "type": "number"
+        },
+        "total_amount": {
+          "type": "number"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["vendor_id", "product_id", "quantity", "cost_price"]
+    },
+    "VendorPayment": {
+      "title": "VendorPayment",
+      "description": "Record of supplier credit clearance payment made.",
+      "type": "object",
+      "properties": {
+        "vendor_id": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "account": {
+          "type": "string",
+          "enum": ["cash", "bank"],
+          "description": "Account from which payment was made (petty cash or bank)."
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["vendor_id", "amount"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Record of general store operating expense (rent, wages, spoilage).",
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "account": {
+          "type": "string",
+          "enum": ["cash", "bank"],
+          "description": "Account from which expense was paid (petty cash or bank)."
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["category", "amount"]
+    },
+    "LoanPartner": {
+      "title": "LoanPartner",
+      "description": "Record of a contact for borrowing or lending money.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the borrower/lender."
+        },
+        "phone": {
+          "type": "string",
+          "description": "WhatsApp contact number."
+        },
+        "balance": {
+          "type": "number",
+          "description": "Net balance. Positive means we gave loan (they owe us), negative means we took loan (we owe them)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["name"]
+    },
+    "LoanTransaction": {
+      "title": "LoanTransaction",
+      "description": "Record of a loan payment, disbursement, or repayment.",
+      "type": "object",
+      "properties": {
+        "partner_id": {
+          "type": "string"
+        },
+        "partner_name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["given", "taken", "repayment_sent", "repayment_received"]
+        },
+        "amount": {
+          "type": "number"
+        },
+        "account": {
+          "type": "string",
+          "enum": ["cash", "bank"]
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": ["partner_id", "type", "amount", "account"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Store system settings like opening balances.",
+      "type": "object",
+      "properties": {
+        "bankOpeningBalance": {
+          "type": "number"
+        },
+        "cashOpeningBalance": {
+          "type": "number"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "List of active store credit accounts."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Online orders submitted by customers."
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Available products and services in store."
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Historic credit purchases."
+    },
+    "/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Historic user payments made."
+    },
+    "/vendors/{vendorId}": {
+      "schema": "Vendor",
+      "description": "Suppliers/vendors list."
+    },
+    "/vendor_purchases/{purchaseId}": {
+      "schema": "VendorPurchase",
+      "description": "Supplier inbound restock purchases."
+    },
+    "/vendor_payments/{paymentId}": {
+      "schema": "VendorPayment",
+      "description": "Payments made to suppliers."
+    },
+    "/expenses/{expenseId}": {
+      "schema": "Expense",
+      "description": "Logged cash outflow expenses."
+    },
+    "/loan_partners/{partnerId}": {
+      "schema": "LoanPartner",
+      "description": "List of contacts for active loans."
+    },
+    "/loan_transactions/{transactionId}": {
+      "schema": "LoanTransaction",
+      "description": "Details of loan disbursement and repayment transactions."
+    },
+    "/settings/{docId}": {
+      "schema": "Settings",
+      "description": "System settings and configuration values."
+    }
+  }
+}
